@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.pyc
+.pytest_cache/
+.venv/
+*.egg-info/
+build/
+dist/
+
+# Practice-challenge passwords and keys must never be committed
+passwords/
+*.pass
+pass[0-9]*
+sshkey*
+*.pem
+*.key

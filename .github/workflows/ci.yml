@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install the package and test tools
+        run: python -m pip install -e ".[test]"
+
+      - name: Run the tests
+        run: python -m pytest -q
+
+      - name: Check that the example commands run
+        run: |
+          python -m ctf_tools.decode examples/layered.hex | grep -q "example_only_not_a_real_flag"
+          python -m ctf_tools.logsearch examples/access.log --preset traversal --json | python -c "import json,sys; assert json.load(sys.stdin)['match_count'] == 2"
+          python -m ctf_tools.pcap examples/sample.pcap follow --src 192.0.2.10 --sport 51000 --dst 192.0.2.20 --dport 9000 | grep -q "flag{stream_demo}"
+
+  shell:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint the Bash scripts
+        run: shellcheck scripts/*.sh
