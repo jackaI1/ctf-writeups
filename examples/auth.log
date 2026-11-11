@@ -1,0 +1,3 @@
+Oct 10 09:01:11 demo sshd[901]: Failed password for root from 203.0.113.50 port 40022 ssh2
+Oct 10 09:01:12 demo sshd[902]: Failed password for invalid user admin from 203.0.113.50 port 40023 ssh2
+Oct 10 09:01:20 demo sshd[903]: Accepted password for student from 192.0.2.10 port 50000 ssh2
